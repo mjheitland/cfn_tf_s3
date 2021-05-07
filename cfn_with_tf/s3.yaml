@@ -1,0 +1,52 @@
+# works only if you run a TF server and install Cloudsoft's Terraform connector 
+# [Installation guide](https://github.com/cloudsoft/aws-cfn-connector-for-terraform/blob/master/doc/installation-guide.md)
+AWSTemplateFormatVersion: 2010-09-09
+Description: Terraform in CloudFormation example, using the Terraform Connector for CloudFormation
+Parameters: 
+  CFNBucket1Name:
+    Type: String
+    Default: terraform-rp-example-bucket1-default-from-cfn-2
+Resources:
+  TerraformExample:
+    Type: Cloudsoft::Terraform::Infrastructure
+    Properties:
+      LogBucketName: cloudsoft-terraform-infrastructure-my-user-logs
+      ConfigurationContent: |
+        variable "AWSRegion" {
+          type = string
+          default = "eu-central-1"
+        }
+        variable "TFBucket1Name" {
+          type = string
+          default = "terraform-rp-example-bucket1-default-from-tf-overridden-by-cfn-so-not-used-or-needed"
+        }
+        provider "aws" {
+          region = var.AWSRegion
+        }
+        
+        resource "aws_s3_bucket" "bucket1" {
+          bucket = var.TFBucket1Name
+          acl    = "private"
+        }
+        
+        output "bucket1-id" {
+          value = aws_s3_bucket.bucket1.id
+        }
+        
+        output "bucket1-arn" {
+          value = aws_s3_bucket.bucket1.arn
+        }
+        
+        output "bucket1-region" {
+          value = aws_s3_bucket.bucket1.region
+        }
+      Variables:
+        AWSRegion: !Ref "AWS::Region"
+        TFBucket1Name: !Ref CFNBucket1Name
+
+Outputs:
+  TerraformOutputs:
+    Description: Outputs from Terraform as a stringified JSON map
+    Value: !GetAtt TerraformExample.OutputsStringified
+  LogBucketUrl:
+    Value: !GetAtt TerraformExample.LogBucketUrl
