@@ -7,12 +7,20 @@ variable "region" {
 variable "bucket_name" {
   description = "S3 bucket to store TF remote state (use only '-' and alphanumerical characters; must be globally unique)"
   type        = string
+  default     = "heitlm-1"
+}
+
+variable "environment" {
+  description = "In which environment are we deploying our resources?"
+  type        = string
+  default     = "dev"
 }
 
 data "template_file" "s3_cfn" {
   template = file("${path.module}/s3_cfn.yaml")
   vars = {
     BucketNameParameter = var.bucket_name
+    EnvironmentParameter = var.environment
   }
 }
 

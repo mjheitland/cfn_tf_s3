@@ -5,6 +5,11 @@ Parameters:
     Type: String
     Description: Globally unique bucket name using characters and dashes.
     Default: ${BucketNameParameter}
+  EnvironmentParameter:
+    AllowedValues: ["dev", "preprod", "prod"]
+    Type: String
+    Description: Environment where the bucket will be deployed to.
+    Default: ${EnvironmentParameter}
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
@@ -22,7 +27,12 @@ Resources:
       BucketEncryption: 
         ServerSideEncryptionConfiguration: 
         - ServerSideEncryptionByDefault:
-            SSEAlgorithm: AES256        
+            SSEAlgorithm: AES256
+      Tags:
+        - Key: Name
+          Value: !Ref BucketNameParameter
+        - Key: Environment
+          Value: !Ref EnvironmentParameter
 Outputs:
   BucketArn:
     Value: 
