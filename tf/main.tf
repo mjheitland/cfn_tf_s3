@@ -7,7 +7,7 @@ variable "region" {
 variable "bucket_name" {
   description = "S3 bucket to store TF remote state (use only '-' and alphanumerical characters; must be globally unique)"
   type        = string
-  default     = "mjheitland-1"
+  default     = "mjheitland1"
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access_block" {
