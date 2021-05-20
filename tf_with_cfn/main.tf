@@ -30,6 +30,7 @@ resource "aws_cloudformation_stack" "tf_with_cfn_s3" {
 }
 
 # Alternative: we can also store the CFN code inline
+#
 # resource "aws_cloudformation_stack" "tf_with_cfn_s3" {
 #   name = "tf-with-cfn-s3"
 # 
