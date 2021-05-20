@@ -29,6 +29,7 @@ resource "aws_cloudformation_stack" "tf_with_cfn_s3" {
   template_body = data.template_file.s3_cfn.rendered
 }
 
+# Alternative: we can also store the CFN code inline
 # resource "aws_cloudformation_stack" "tf_with_cfn_s3" {
 #   name = "tf-with-cfn-s3"
 # 
