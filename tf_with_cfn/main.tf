@@ -26,6 +26,7 @@ data "template_file" "s3_cfn" {
 
 resource "aws_cloudformation_stack" "tf_with_cfn_s3" {
   name = "tf-with-cfn-s3"
+  # only if you need IAM or if your CFN template includes macros: capabilities = ["CAPABILITY_IAM", "CAPABILITY_AUTO_EXPAND", "CAPABILITY_NAMED_IAM"]
   template_body = data.template_file.s3_cfn.rendered
 }
 
